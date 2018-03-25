@@ -7,6 +7,8 @@ The ESP32 is used as a MQTT client to send data to the Thingspeak MQTT Broker se
 
 myNet.py needs to be modified with your network settings. All files excluding this one should be copied to the ESP32 board.
 
-Please visit http://micropython.org/ for more information on setting up the ESP32 and please visit Fab-Cre8.wordpress.com for more information on our projects
+My ThingSpeak channel is here: https://thingspeak.com/channels/456189
+
+Please visit http://micropython.org/ for more information on setting up the ESP32 and please visit https://fabcre8.wordpress.com for more information on our projects
 
 Aidan Taylor, Fab-Cre8 2018.
