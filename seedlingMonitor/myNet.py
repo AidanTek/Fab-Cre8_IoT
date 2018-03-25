@@ -1,7 +1,7 @@
 # This is the network setup for the seedlingMonitor.py
 # script.
 #
-# by Aidan Taylor, Fab-Cre8 2018
+# by Aidan Taylor, Fab-Cre8. 2018
 
 import network
 from umqtt.simple import MQTTClient
@@ -20,9 +20,8 @@ tsUrl = b"mqtt.thingspeak.com" # MQTT broker?
 tsUserId = b"###" # ThingSpeak User ID
 tsMQTTAPI = b"###" # ThingSpeak MQTT API Key
 
-#
 # create a random MQTT clientID
-# I don't know why you need to do this...
+# (I don't know why you need to do this...)
 randomNum = int.from_bytes(uos.urandom(3), 'little')
 myMqttClient = bytes("client_"+str(randomNum), 'utf-8')
 

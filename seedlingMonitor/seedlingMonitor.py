@@ -1,4 +1,4 @@
-# v2 Seedling Monitor for MicroPython on the ESP32
+# v1.3 Seedling Monitor for MicroPython on the ESP32
 #
 # Hardware involves a Lolin32 Lite with a ORP12 LDR and a DHT11 sensor
 # Data is sent to the ThingSpeak MQTT broker, please see myNet.py
@@ -9,14 +9,14 @@
 # Because it can be hard to catch the ESP32 before it goes into deepsleep, a
 # jumper wire on GPIO2 to ground kills the script, so you can reprogram.
 #
-# Script by Aidan Taylor, Fab-Cre8 2018
+# Script by Aidan Taylor, Fab-Cre8. 2018
 
 from machine import Pin, ADC, deepsleep
 from dht import DHT11
 import time
 
 print("Seedling Environment Monitor by Aidan Taylor")
-print("v1.2 2018. Fab-Cre8\n")
+print("v1.3 2018. Fab-Cre8\n")
 
 import myNet
 
@@ -24,7 +24,8 @@ import myNet
 led = Pin(22, Pin.OUT) # on board LED on pin 22
 ks = Pin(2, Pin.IN) # killswitch pin, tie to gnd to stop loop
 ks.PULL_UP
-ldr = ADC(Pin(35)) # LDR has a 75k pullup resistor which seems good
+# Todo - try different resistor value for LDR, between 47k and 75k, maybe trim?
+ldr = ADC(Pin(35))
 dSens = DHT11(Pin(17))
 
 print("setup complete, starting loop...\n\n\n")
