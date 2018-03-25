@@ -45,9 +45,8 @@ while not station.isconnected():
     time.sleep(5)
 print("Connected!\n")
 
-client.connect()
-
 def ThingSpeakUpload(l,t,h):
+    client.connect()
     credentials = bytes("channels/{:s}/publish/{:s}".format(tsChan, tsWAPI), 'utf-8')
     payload = bytes("field1={}&field2={}&field3={}\n".format(l,t,h), 'utf-8')
     client.publish(credentials, payload)

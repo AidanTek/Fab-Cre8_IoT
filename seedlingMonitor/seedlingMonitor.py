@@ -1,10 +1,17 @@
 # v2 Seedling Monitor for MicroPython on the ESP32
+#
 # Hardware involves a Lolin32 Lite with a ORP12 LDR and a DHT11 sensor
-# ThingSpeak or Adafruit.io to be implemented.
+# Data is sent to the ThingSpeak MQTT broker, please see myNet.py
+#
+# The ESP32 is put into deepsleep for 15 minutes after every upload
+# - this should go a long way to conserving battery life!
+#
+# Because it can be hard to catch the ESP32 before it goes into deepsleep, a
+# jumper wire on GPIO2 to ground kills the script, so you can reprogram.
 #
 # Script by Aidan Taylor, Fab-Cre8 2018
 
-from machine import Pin, ADC
+from machine import Pin, ADC, deepsleep
 from dht import DHT11
 import time
 
@@ -15,12 +22,16 @@ import myNet
 
 # Hardware object setup:
 led = Pin(22, Pin.OUT) # on board LED on pin 22
+ks = Pin(2, Pin.IN) # killswitch pin, tie to gnd to stop loop
+ks.PULL_UP
 ldr = ADC(Pin(35)) # LDR has a 75k pullup resistor which seems good
 dSens = DHT11(Pin(17))
 
 print("setup complete, starting loop...\n\n\n")
 
-while True:
+configMode = ks.value()
+
+while not configMode:
     # Blink the LED to indicate a new reading:
     led.value(0)
     time.sleep(0.2)
@@ -44,7 +55,9 @@ while True:
 
     myNet.ThingSpeakUpload(LgtLv, dSens.temperature(), dSens.humidity())
 
-    # rest for 30 seconds - would be good to try low power?
-    time.sleep(900)
+    time.sleep(5) # A little time is needed to allow for the upload
 
-myNet.client.disconnect()
+    myNet.client.disconnect()
+
+    # deepsleep for 15 minutes
+    deepsleep(900000)
