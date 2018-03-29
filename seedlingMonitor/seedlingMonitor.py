@@ -22,17 +22,15 @@ import myNet
 
 # Hardware object setup:
 led = Pin(22, Pin.OUT) # on board LED on pin 22
-ks = Pin(2, Pin.IN) # killswitch pin, tie to gnd to stop loop
-ks.PULL_UP
+ks = Pin(2, Pin.IN, Pin.PULL_UP) # killswitch pin, tie to gnd to stop loop
 # Todo - try different resistor value for LDR, between 47k and 75k, maybe trim?
 ldr = ADC(Pin(35))
 dSens = DHT11(Pin(17))
 
 print("setup complete, starting loop...\n\n\n")
 
-configMode = ks.value()
-
 while not configMode:
+    configMode = ks.value()
     # Blink the LED to indicate a new reading:
     led.value(0)
     time.sleep(0.2)
