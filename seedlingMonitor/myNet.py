@@ -35,14 +35,19 @@ client = MQTTClient(client_id=myMqttClient,
 # WiFi init:
 station = network.WLAN(network.STA_IF)
 station.active(True)
-station.connect(SSID, Password)
 
-# Wait for connection
-print("connecting...")
-while not station.isconnected():
-    print("...")
-    time.sleep(5)
-print("Connected!\n")
+def WiFiConnect():
+    # Connect
+    station.connect(SSID, Password)
+
+    # Wait for connection
+    print("connecting...")
+    while not station.isconnected():
+        print("...")
+        time.sleep(5)
+        print("Connected!\n")
+
+WiFiConnect()
 
 def ThingSpeakUpload(l,t,h):
     client.connect()

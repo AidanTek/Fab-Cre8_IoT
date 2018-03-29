@@ -35,6 +35,10 @@ configMode = ks.value()
 
 while configMode:
     configMode = ks.value()
+
+    if not myNet.station.isconnected():
+        myNet.WiFiConnect()
+
     # Blink the LED to indicate a new reading:
     led.value(0)
     time.sleep(0.2)
@@ -61,6 +65,9 @@ while configMode:
     time.sleep(5) # A little time is needed to allow for the upload
 
     myNet.client.disconnect()
+
+    # Try disconnecting WiFi to save on power - EXPERIMENTAL
+    myNet.station.disconnect()
 
     # deepsleep for 15 minutes
     deepsleep(900000)
