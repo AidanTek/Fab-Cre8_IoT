@@ -31,7 +31,9 @@ print("setup complete, starting loop...\n\n\n")
 
 configMode = ks.value()
 
-while not configMode:
+# note internal LED will stay on when in configMode
+
+while configMode:
     configMode = ks.value()
     # Blink the LED to indicate a new reading:
     led.value(0)
