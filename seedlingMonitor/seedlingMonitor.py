@@ -29,6 +29,8 @@ dSens = DHT11(Pin(17))
 
 print("setup complete, starting loop...\n\n\n")
 
+configMode = ks.value()
+
 while not configMode:
     configMode = ks.value()
     # Blink the LED to indicate a new reading:
