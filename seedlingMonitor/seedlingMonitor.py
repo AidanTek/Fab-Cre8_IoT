@@ -16,7 +16,7 @@ from dht import DHT11
 import time
 
 print("Seedling Environment Monitor by Aidan Taylor")
-print("v1.3 2018. Fab-Cre8\n")
+print("v1.5 2018. Fab-Cre8\n")
 
 import myNet
 
@@ -25,6 +25,7 @@ led = Pin(22, Pin.OUT) # on board LED on pin 22
 ks = Pin(2, Pin.IN, Pin.PULL_UP) # killswitch pin, tie to gnd to stop loop
 # Todo - try different resistor value for LDR, between 47k and 75k, maybe trim?
 ldr = ADC(Pin(35))
+dhtEn = Pin(0, Pin.OUT) # EXPERIMENTAL power the DHT11 from a GPIO pin
 dSens = DHT11(Pin(17))
 
 print("setup complete, starting loop...\n\n\n")
@@ -38,6 +39,9 @@ while configMode:
 
     if not myNet.station.isconnected():
         myNet.WiFiConnect()
+
+    # EXPERIMENTAL activate the DHT11
+    dhtEn.value(1)
 
     # Blink the LED to indicate a new reading:
     led.value(0)
@@ -68,6 +72,9 @@ while configMode:
 
     # Try disconnecting WiFi to save on power - EXPERIMENTAL
     myNet.station.disconnect()
+
+    # EXPERIMENTAL deactivate the DHT11
+    dhtEn.value(0)
 
     # deepsleep for 15 minutes
     deepsleep(900000)
