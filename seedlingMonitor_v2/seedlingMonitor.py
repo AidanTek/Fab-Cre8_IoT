@@ -85,5 +85,5 @@ while configMode:
     BMEEn.value(0)
     ldrEn.value(0)
 
-    # deepsleep for 15 minutes
+    # deepsleep for 15 minutes (900000)
     deepsleep(900000)

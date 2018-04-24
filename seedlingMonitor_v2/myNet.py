@@ -1,5 +1,4 @@
-# This is the network setup for the seedlingMonitor.py
-# script.
+# This is the network setup for the seedlingMonitor.py script.
 #
 # by Aidan Taylor, Fab-Cre8. 2018
 
@@ -10,17 +9,17 @@ import time
 
 # Key strings:
 # Network
-SSID = "###" # Network Name
-Password = "###" # Network password
+SSID = "" # Network Name
+Password = "" # Network password
 #ThingSpeak
-tsChan = b"###" # ThingSpeak Channel
-tsWAPI = b"###" # ThingSpeak Write API Key
-tsMQTTAPI = b"###" # ThingSpeak User API Key
-tsUrl = b"mqtt.thingspeak.com" # MQTT broker?
-tsUserId = b"###" # ThingSpeak User ID
+tsChan = b"" # ThingSpeak Channel
+tsWAPI = b"" # ThingSpeak Write API Key
+tsMQTTAPI = b"" # ThingSpeak User API Key
+tsUrl = b"mqtt.thingspeak.com" # MQTT broker
+tsUserId = b"" # ThingSpeak User ID
+tsUserAPI = b""
 
 # create a random MQTT clientID
-# (I don't know why you need to do this...)
 randomNum = int.from_bytes(uos.urandom(3), 'little')
 myMqttClient = bytes("client_"+str(randomNum), 'utf-8')
 
@@ -28,8 +27,7 @@ client = MQTTClient(client_id=myMqttClient,
                     server=tsUrl,
                     user=tsUserId,
                     password=tsMQTTAPI,
-                    port=8883,
-                    ssl=True)
+                    port=1883)
 
 # WiFi init:
 station = network.WLAN(network.STA_IF)

@@ -73,10 +73,10 @@ def sendEmail():
 def main():
     while True:
         if button.is_pressed:
-            print("Button Pressed! Taking Photo")
+            print("Button pressed, taking photo...")
             print(time.asctime())
             saveImage()
-            print("Image Saved! Sending Email")
+            print("Image saved. Sending mail...")
             time.sleep(1)
             sendEmail()
 
