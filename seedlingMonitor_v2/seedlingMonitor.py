@@ -18,7 +18,7 @@ from bme280 import BME280
 import time
 
 print("Seedling Environment Monitor by Aidan Taylor")
-print("v1.5 2018. Fab-Cre8\n")
+print("Fab-Cre8. 2018.\n")
 
 import myNet
 
@@ -27,8 +27,6 @@ led = Pin(5, Pin.OUT) # on board LED on pin 5 (active LOW)
 ks = Pin(2, Pin.IN, Pin.PULL_UP) # killswitch pin, tie to gnd to stop loop
 # ldr BIAS resistor is set as 56k - should test for range to calibrate
 ldr = ADC(Pin(35))
-BMEEn = Pin(16, Pin.OUT) # EXPERIMENTAL power the BME280 from a GPIO pin
-ldrEn = Pin(17, Pin.OUT) # EXPERIMENTAL Bias the from a GPIO pin
 i2c = I2C(scl=Pin(0), sda=Pin(4))
 sensor = BME280(i2c=i2c)
 
@@ -38,15 +36,14 @@ configMode = ks.value()
 
 # note internal LED will stay on when in configMode
 
+# On power up, first read of BME280 seems bogus, so do it now:
+temperature, pressure, humidity = sensor.read_compensated_data()
+
 while configMode:
     configMode = ks.value()
 
     if not myNet.station.isconnected():
         myNet.WiFiConnect()
-
-    # EXPERIMENTAL activate the BME & ldr
-    BMEEn.value(1)
-    ldrEn.value(1)
 
     # Blink the LED to indicate a new reading:
     led.value(0)
@@ -80,10 +77,6 @@ while configMode:
 
     # Try disconnecting WiFi to save on power - EXPERIMENTAL
     myNet.station.disconnect()
-
-    # EXPERIMENTAL deactivate the BME280 and ldr bias
-    BMEEn.value(0)
-    ldrEn.value(0)
 
     # deepsleep for 15 minutes (900000)
     deepsleep(900000)
