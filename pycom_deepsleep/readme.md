@@ -8,5 +8,4 @@ The script will blink the onboard LED for just under 10 seconds, then it will se
 
 **todo:**
 
-* Try deactivating WiFI in boot.py
 * Try activating / deactivating LoRa Antenna between active/sleep state

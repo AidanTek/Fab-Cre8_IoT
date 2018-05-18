@@ -10,7 +10,7 @@ SSID = 'eduroam' # Network Name
 User = 'fablab@cardiffmet.ac.uk'
 Password = 'Fa6La6!' # Network password
 deviceID = 'LoPy4Test'
-certPath = '/flash/pfencehaca.cer'
+certPath = '/flash/cert/pfencehaca.cer'
 
 # WiFi init:
 station = WLAN(mode=WLAN.STA)
@@ -58,8 +58,10 @@ while True:
     print('Device MAC = ', ubinascii.hexlify(machine.unique_id(),':').decode())
     print('')
 
+    sleep(3)
+
     #try:
-    #    socketTest()
+        #socketTest()
 
     http_get('http://micropython.org/ks/test.html')
     #contents = urllib.urequest.urlopen("http://google.com")
