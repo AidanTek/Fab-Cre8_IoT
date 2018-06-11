@@ -6,7 +6,6 @@ import binascii
 import pycom
 from machine import Pin
 import socket
-import struct # no idea what this does - need to read up on it
 
 # Configure IO Pins:
 configPin = Pin('P21', Pin.IN, Pin.PULL_UP) # Pull low to exit to REPL
