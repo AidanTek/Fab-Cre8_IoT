@@ -65,7 +65,7 @@ password=hash:(the generated hash key)
 mine looks like:
 password=hash:4c7d63814...
 ```
-* Finally, let's get rid of the generated output from cat_installer as this also contains your password in human readable form: ```cd ~/.cat_installer/``` and finally ```rm cat_installer.conf```
+* Finally, let's get rid of the generated output from cat_installer as this also contains your password in human readable form: ```rm ~/.cat_installer/cat_installer.conf```
 * Now remove the ethernet lead and reboot your Pi with ```reboot```
 * Once the desktop has started, you should see the WiFi symbol come to life in the top right hand corner of the screen, success!!
 
