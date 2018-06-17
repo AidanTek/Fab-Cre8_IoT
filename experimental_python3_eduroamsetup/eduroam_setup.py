@@ -3,6 +3,18 @@ import os
 import shutil
 import hashlib
 import urllib.request
+import time
+
+print('''
+Raspberry Pi Eduroam Setup Tool for Cardiff Metropolitan University
+by Aidan Taylor. 2018.
+for support, please contact me via artaylor@cardiffmet.ac.uk
+
+This tool will automate your network setup for Eduroam connection. You need to
+have your user login and password ready. Your password is only stored in the
+relevant system location and is also hashed securely. Please note this script
+will restart your Pi on completion. Press ctrl-c to exit or cancel restart.
+''')
 
 # User input:
 login = input('Enter your user login (eg st00000@cardiffmet.ac.uk): ')
@@ -15,10 +27,11 @@ while not password == password2:
 
 # Hash the password:
 hashpass = hashlib.new('md4')
-hashpass.update(bytes(password, 'utf-8'))
+hashpass.update(bytes(password, 'utf-16le'))
 print('Password securely hashed')
 
 # Generate the CA Certificate:
+print('Creating certificate...')
 cert = '''mkdir /etc/ca-certificates;
 echo "-----BEGIN CERTIFICATE-----
 MIIE1jCCA76gAwIBAgIJANPtI+HxqbTAMA0GCSqGSIb3DQEBBQUAMIGiMQswCQYD
@@ -82,6 +95,7 @@ Pou2S5hy8IODIPAUKDBnOvhO+qwC5xSbLE4t6A2yjbt3fxoVi8XupQ2lN9rd9Q==
 '''
 
 os.system(cert)
+print('Done')
 
 # Update network settings:
 print('Updating network settings...')
@@ -102,7 +116,7 @@ net_setup = '''
 #print(net_setup)
 
 temp = open('temp', 'w')
-with open(os.path.join('/etc/wpa-supplicant', 'wpa-supplicant.conf'), 'r') as f:
+with open(os.path.join('/etc/wpa_supplicant', 'wpa_supplicant.conf'), 'r') as f:
     for line in f:
         temp.write(line)
         if line.startswith('network={'):
@@ -110,5 +124,14 @@ with open(os.path.join('/etc/wpa-supplicant', 'wpa-supplicant.conf'), 'r') as f:
             temp.write(line)
 
 temp.close()
-shutil.move('temp', os.path.join('/etc/wpa-supplicant', 'wpa-supplicant.conf'))
+shutil.move('temp', os.path.join('/etc/wpa_supplicant', 'wpa_supplicant.conf'))
 print('done')
+
+print('restarting Pi in...')
+counter = 5
+while counter > 0:
+	print(counter)
+	time.sleep(1)
+	counter = counter-1
+
+os.system('reboot')
