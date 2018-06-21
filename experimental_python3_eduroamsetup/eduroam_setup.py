@@ -2,7 +2,6 @@ import sys
 import os
 import shutil
 import hashlib
-import urllib.request
 import time
 
 print('''
