@@ -2,7 +2,9 @@ import sys
 import os
 import shutil
 import hashlib
+import urllib.request
 import time
+import getpass
 
 print('''
 Raspberry Pi Eduroam Setup Tool for Cardiff Metropolitan University
@@ -17,8 +19,8 @@ will restart your Pi on completion. Press ctrl-c to exit or cancel restart.
 
 # User input:
 login = input('Enter your user login (eg st00000@cardiffmet.ac.uk): ')
-password = input('Enter your secure password: ')
-password2 = input('re-enter password: ')
+password = getpass.getpass('Enter your secure password (text hidden): ')
+password2 = getpass.getpass('re-enter password: ')
 
 while not password == password2:
 	print('Passwords do not match')
@@ -31,8 +33,12 @@ print('Password securely hashed')
 
 # Generate the CA Certificate:
 print('Creating certificate...')
-cert = '''mkdir /etc/ca-certificates;
-echo "-----BEGIN CERTIFICATE-----
+
+if not os.path.exists("/etc/ca-certificates/"):
+    path = 'mkdir /etc/ca-certificates'
+    os.system(path)
+
+cert = '''echo "-----BEGIN CERTIFICATE-----
 MIIE1jCCA76gAwIBAgIJANPtI+HxqbTAMA0GCSqGSIb3DQEBBQUAMIGiMQswCQYD
 VQQGEwJHQjEYMBYGA1UECBMPU291dGggR2xhbW9yZ2FuMRAwDgYDVQQHEwdDYXJk
 aWZmMSgwJgYDVQQKEx9DYXJkaWZmIE1ldHJvcG9saXRhbiBVbml2ZXJzaXR5MScw
@@ -98,8 +104,7 @@ print('Done')
 
 # Update network settings:
 print('Updating network settings...')
-net_setup = '''
-	ssid="eduroam"
+net_setup = '''        ssid="eduroam"
 	key_mgmt=WPA-EAP
 	pairwise=CCMP
 	group=CCMP TKIP
@@ -108,9 +113,7 @@ net_setup = '''
 	identity="{}"
 	domain_suffix_match="ac.uk"
 	phase2="auth=MSCHAPV2"
-	password=hash:{}
-
-    '''.format(login, hashpass.hexdigest())
+	password=hash:{}'''.format(login, hashpass.hexdigest())
 
 #print(net_setup)
 
@@ -118,10 +121,8 @@ temp = open('temp', 'w')
 with open(os.path.join('/etc/wpa_supplicant', 'wpa_supplicant.conf'), 'r') as f:
     for line in f:
         temp.write(line)
-        if line.startswith('network={'):
-            line = net_setup + '\n'
-            temp.write(line)
-
+    line = 'network={\n' + net_setup + '\n}\n'
+    temp.write(line)
 temp.close()
 shutil.move('temp', os.path.join('/etc/wpa_supplicant', 'wpa_supplicant.conf'))
 print('done')
