@@ -27,9 +27,9 @@ lora = LoRa(mode=LoRa.LORA, region=LoRa.EU868)
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # Check the Config pin:
-configMode = configPin()
+configMode = not configPin()
 
-if configMode:
+if not configMode:
     print('Reading Battery')
     pycom.rgbled(0x0000FF)
     message = 'Battery Status: {}'.format(battConversion())
